@@ -7,8 +7,9 @@ class NeuralNetwork:
         self.bias = np.random.randn()
         self.learning_Rate = learning_Rate
 
+    #Layer 2
     #Sigmoid function
-    def sigmoid(x):
+    def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
     #Sigmoid after deriving
     def sigmoid_Deriv(self, x):
@@ -58,9 +59,10 @@ class NeuralNetwork:
             #Computes the gradients and update the weights
             dError_dBias, dError_DWeights = self.compute_Gradients(input_Vector, target)
 
+            #Updates the bias and weights
             self.updates_Parameters(dError_dBias, dError_DWeights)
 
-            #Measures the cumulative error for all instances
+            #Checks and observes the error change over 100 iterations
             if current_Iteration % 100 == 0:
                 cumulative_Error = 0
                 #Loop through all the instances to measure the error
@@ -68,15 +70,18 @@ class NeuralNetwork:
                     date_Point = input_Vectors[data_Instance_Index]
                     target = targets[data_Instance_Index]
 
+                    #Computes the prediction results
                     prediction = self.prediction(date_Point)
+                    #Computes the error for every instance
                     error = np.square(prediction - target)
 
+                    #Computes the sum of the errors and add to the array
                     cumulative_Error = cumulative_Error + error
                 cumulative_Errors.append(cumulative_Error)
         
         return cumulative_Errors
     
-#Makes a prediction
+#Makes a prediction and displays the result in a graph
 input_vectors = np.array(
      [
          [3, 1.5],
@@ -101,4 +106,4 @@ training_error = neural_network.train(input_vectors, targets, 10000)
 plt.plot(training_error)
 plt.xlabel("Iterations")
 plt.ylabel("Error for all training instances")
-plt.savefig("cumulative_error.png")
+plt.savefig("cumulative_error1.png")
